@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Blob Stopper - Overcoming Obesity</title>
+    <title>Overcoming The Blobs of Life</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,56 @@
             margin: 0;
             padding: 20px;
             background-color: #f0f8ff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(240, 248, 255, 0.9), rgba(240, 248, 255, 0.9)), 
+                url('https://openweathermap.org/img/wn/10d@2x.png');
+            background-repeat: repeat;
+            background-size: 100px;
+            background-position: center center;
+            background-attachment: fixed;
+            background-blend-mode: multiply;
+        }
+        .weather-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .weather-links {
+            display: flex;
+            gap: 20px;
+            margin: 10px 0;
+        }
+        .weather-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .weather-table th, .weather-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .news-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .music-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .genre-select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
         }
         .container {
             max-width: 800px;
@@ -31,59 +81,293 @@
             border-left: 4px solid #3498db;
             border-radius: 4px;
         }
+        .collapsible {
+            background-color: #f8f9fa;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 4px;
+            margin: 5px 0;
+            position: relative;
+        }
+        .collapsible:after {
+            content: '\02795';
+            font-size: 13px;
+            color: #777;
+            float: right;
+            margin-left: 5px;
+        }
+        .active:after {
+            content: "\2796";
+        }
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f8f9fa;
+            padding: 0 18px;
+            display: none;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .toc {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .weather-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .weather-content {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 300px;
+        }
+        .toc-content {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .toc-content a {
+            display: block;
+            padding: 5px 0;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        .toc-content a:hover {
+            color: #3498db;
+        }
+        .section-header {
+            background: #2c3e50;
+            color: white;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
+    <div class="weather-icon" onclick="toggleWeather()">🌤️</div>
+    <div class="weather-content" id="weatherContent">
+        <h3>Weather Updates</h3>
+        <div class="weather-section">
+            <p>Plan your outdoor activities with accurate weather info:</p>
+            <div class="weather-links">
+                <a href="https://weather.com/weather/today/l/43.65,-79.38" target="_blank" style="color: #3498db; text-decoration: none;">Weather.com</a>
+                <a href="https://www.theweathernetwork.com/ca/weather/ontario/toronto" target="_blank" style="color: #3498db; text-decoration: none;">Weather Network</a>
+            </div>
+            <div class="tip-box">
+                <p>Current Conditions:</p>
+                <ul>
+                    <li>Temperature</li>
+                    <li>Precipitation Chance</li>
+                    <li>Wind Speed</li>
+                    <li>UV Index</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="toc" onclick="toggleTOC()">📑</div>
+    <div class="toc-content" id="tocContent">
+        <a href="#fitness">Fitness Blob</a>
+        <a href="#dating">Dating Standards Blob</a>
+        <a href="#career">Career Blob</a>
+        <a href="#body">Body Image Blob</a>
+        <a href="#mental">Mental Health Blob</a>
+        <a href="#financial">Financial Blob</a>
+    </div>
+
     <div class="container">
-        <h1>🎯 The Blob Stopper: Your Guide to Overcoming Obesity</h1>
+        <h1>🎯 The Blob Stopper: Your Guide to Overcoming Life's Blobs</h1>
         
-        <h2>1. Healthy Eating Habits</h2>
-        <div class="tip-box">
-            <ul>
-                <li>Practice portion control</li>
-                <li>Include more fruits and vegetables in your diet</li>
-                <li>Choose whole grains over refined grains</li>
-                <li>Limit processed foods and sugary drinks</li>
-                <li>Plan your meals ahead</li>
-            </ul>
+        <div class="section-header" id="fitness">FITNESS BLOB</div>
+        <button class="collapsible">Exercise Routines</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>30 minutes cardio (running, cycling, swimming)</li>
+                    <li>Strength training 3x per week</li>
+                    <li>Flexibility work (yoga, stretching)</li>
+                    <li>Rest days for recovery</li>
+                    <li>Track progress with fitness apps</li>
+                </ul>
+            </div>
         </div>
 
-        <h2>2. Regular Physical Activity</h2>
-        <div class="tip-box">
-            <ul>
-                <li>Start with 30 minutes of daily exercise</li>
-                <li>Include both cardio and strength training</li>
-                <li>Take regular walking breaks</li>
-                <li>Find activities you enjoy</li>
-                <li>Join group fitness classes</li>
-            </ul>
+        <button class="collapsible">Nutrition Guidelines</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Calculate daily caloric needs</li>
+                    <li>Track macronutrients (protein, carbs, fats)</li>
+                    <li>Meal prep for consistency</li>
+                    <li>Stay hydrated (2-3L water daily)</li>
+                    <li>Choose whole foods over processed</li>
+                </ul>
+            </div>
         </div>
 
-        <h2>3. Lifestyle Changes</h2>
-        <div class="tip-box">
-            <ul>
-                <li>Get adequate sleep (7-9 hours)</li>
-                <li>Manage stress through meditation or yoga</li>
-                <li>Keep a food and exercise journal</li>
-                <li>Set realistic goals</li>
-                <li>Build a support system</li>
-            </ul>
+        <div class="section-header" id="dating">DATING STANDARDS BLOB</div>
+        <button class="collapsible">Self-Improvement for Dating</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Focus on personal growth and development</li>
+                    <li>Build financial stability and career success</li>
+                    <li>Maintain physical health and appearance</li>
+                    <li>Develop interesting hobbies and skills</li>
+                    <li>Work on emotional intelligence and communication</li>
+                    <li>Create a fulfilling social life independently</li>
+                </ul>
+            </div>
         </div>
 
-        <h2>4. Medical Support</h2>
-        <div class="tip-box">
-            <ul>
-                <li>Consult with healthcare providers</li>
-                <li>Regular health check-ups</li>
-                <li>Consider working with a nutritionist</li>
-                <li>Explore behavioral therapy options</li>
-                <li>Discuss medical interventions if necessary</li>
-            </ul>
+        <button class="collapsible">Setting Relationship Standards</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Know your worth and don't settle</li>
+                    <li>Seek partners who match your level of self-improvement</li>
+                    <li>Look for mutual growth and ambition</li>
+                    <li>Ensure compatible life goals and values</li>
+                    <li>Maintain high standards while being realistic</li>
+                    <li>Be the partner you wish to attract</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header" id="career">CAREER BLOB</div>
+        <button class="collapsible">Career Development</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Set SMART career goals</li>
+                    <li>Build relevant skills continuously</li>
+                    <li>Network within your industry</li>
+                    <li>Seek mentorship opportunities</li>
+                    <li>Track achievements for reviews</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="collapsible">Workplace Success</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Master time management</li>
+                    <li>Develop leadership skills</li>
+                    <li>Practice effective communication</li>
+                    <li>Maintain work-life balance</li>
+                    <li>Stay updated with industry trends</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header" id="body">BODY IMAGE BLOB</div>
+        <button class="collapsible">Positive Self-Image</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Practice daily affirmations</li>
+                    <li>Focus on health over appearance</li>
+                    <li>Celebrate body achievements</li>
+                    <li>Wear clothes that make you feel confident</li>
+                    <li>Surround yourself with positive influences</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header" id="mental">MENTAL HEALTH BLOB</div>
+        <button class="collapsible">Emotional Wellness</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Practice daily mindfulness</li>
+                    <li>Maintain a gratitude journal</li>
+                    <li>Set healthy boundaries</li>
+                    <li>Seek professional support when needed</li>
+                    <li>Develop stress management techniques</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-header" id="financial">FINANCIAL BLOB</div>
+        <button class="collapsible">Money Management</button>
+        <div class="content">
+            <div class="tip-box">
+                <ul>
+                    <li>Create and follow a budget</li>
+                    <li>Build emergency savings</li>
+                    <li>Invest for long-term growth</li>
+                    <li>Minimize unnecessary expenses</li>
+                    <li>Track financial goals regularly</li>
+                </ul>
+            </div>
         </div>
 
         <p style="text-align: center; margin-top: 20px;">
-            Remember: Small steps lead to big changes. Start your journey today!
+            Remember: Every small step counts towards your transformation. Stay consistent and patient with your progress!
         </p>
     </div>
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.display = "block";
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+
+        function toggleTOC() {
+            var toc = document.getElementById("tocContent");
+            toc.style.display = toc.style.display === "block" ? "none" : "block";
+        }
+
+        function toggleWeather() {
+            var weather = document.getElementById("weatherContent");
+            weather.style.display = weather.style.display === "block" ? "none" : "block";
+        }
+    </script>
 </body>
 </html>
